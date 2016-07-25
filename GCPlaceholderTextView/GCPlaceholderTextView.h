@@ -11,9 +11,16 @@
 
 @interface GCPlaceholderTextView : UITextView 
 
-@property(nonatomic, strong) NSString *placeholder;
+@property (nonatomic, assign) id<UITextInput> next;
+@property (nonatomic, assign) id<UITextInput> prev;
+@property (nonatomic, strong) NSString *placeholder;
 
 @property (nonatomic, strong) UIColor *realTextColor UI_APPEARANCE_SELECTOR;
 @property (nonatomic, strong) UIColor *placeholderColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIFont *placeholderFont;
+
+- (void)goPrev;
+- (void)goNext;
+- (void)done;
 
 @end

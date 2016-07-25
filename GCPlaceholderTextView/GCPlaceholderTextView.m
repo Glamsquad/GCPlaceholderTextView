@@ -99,8 +99,8 @@
 
 - (void) endEditing:(NSNotification*) notification {
     if ([self.realText isEqualToString:@""] || self.realText == nil) {
-        super.text = self.placeholder;
         self.textColor = self.placeholderColor;
+        super.text = self.placeholder;
     }
 }
 
@@ -116,6 +116,18 @@
         self.realTextColor = textColor;
         [super setTextColor:textColor];
     }
+}
+
+- (void)goPrev {
+    [self.prev becomeFirstResponder];
+}
+
+- (void)goNext {
+    [self.next becomeFirstResponder];
+}
+
+- (void)done {
+    [self resignFirstResponder];
 }
 
 #pragma mark -
