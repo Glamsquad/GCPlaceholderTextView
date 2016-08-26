@@ -19,10 +19,6 @@
 
 @implementation GCPlaceholderTextView
 
-@synthesize realTextColor;
-@synthesize placeholder;
-@synthesize placeholderColor;
-
 #pragma mark -
 #pragma mark Initialisation
 
@@ -39,17 +35,19 @@
     
     self.realTextColor = self.textColor;
     self.placeholderColor = [UIColor lightGrayColor];
+    self.realFont = self.font;
+    self.placeholderFont = self.font;
 }
 
 #pragma mark -
 #pragma mark Setter/Getters
 
 - (void) setPlaceholder:(NSString *)aPlaceholder {
-    if ([self.realText isEqualToString:placeholder] && ![self isFirstResponder]) {
+    if ([self.realText isEqualToString:_placeholder] && ![self isFirstResponder]) {
         self.text = aPlaceholder;
     }
-    if (aPlaceholder != placeholder) {
-        placeholder = aPlaceholder;
+    if (aPlaceholder != _placeholder) {
+        _placeholder = aPlaceholder;
     }
     
     
@@ -57,10 +55,18 @@
 }
 
 - (void)setPlaceholderColor:(UIColor *)aPlaceholderColor {
-    placeholderColor = aPlaceholderColor;
+    _placeholderColor = aPlaceholderColor;
     
     if ([super.text isEqualToString:self.placeholder]) {
         self.textColor = self.placeholderColor;
+    }
+}
+
+- (void)setPlaceholderFont:(UIFont *)aPlaceholderFont {
+    _placeholderFont = aPlaceholderFont;
+    
+    if ([super.text isEqualToString:self.placeholder]) {
+        self.font = self.placeholderFont;
     }
 }
 
@@ -80,9 +86,11 @@
     
     if ([text isEqualToString:self.placeholder] || text == nil) {
         self.textColor = self.placeholderColor;
+        self.font = self.placeholderFont;
     }
     else {
         self.textColor = self.realTextColor;
+        self.font = self.realFont;
     }
 }
 
@@ -94,6 +102,7 @@
     if ([self.realText isEqualToString:self.placeholder]) {
         super.text = nil;
         self.textColor = self.realTextColor;
+        self.font = self.realFont;
     }
 }
 
@@ -118,6 +127,20 @@
     }
 }
 
+- (void)setFont:(UIFont *)font {
+    if ([self.realText isEqualToString:self.placeholder]) {
+        if ([font isEqual:self.placeholderFont]){
+            [super setFont:font];
+        } else {
+            self.realFont = font;
+        }
+    }
+    else {
+        self.realFont = font;
+        [super setFont:font];
+    }
+}
+
 - (void)goPrev {
     [self.prev becomeFirstResponder];
 }
@@ -135,7 +158,6 @@
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
 }
 
 @end
